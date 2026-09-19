@@ -4,9 +4,12 @@ on:
   push:
     branches:
       - main
+      - develop
+      - feature/**
   pull_request:
     branches:
       - main
+      - develop
 
 jobs:
   pruebas:
@@ -23,11 +26,14 @@ jobs:
           java-version: '17'
           cache: maven
 
-      - name: Compilar proyecto
+      - name: Build
         run: mvn clean compile
 
       - name: Ejecutar pruebas unitarias y BDD
         run: mvn test
+
+      - name: Ejecutar pruebas de integración
+        run: mvn failsafe:integration-test failsafe:verify
 
       - name: Generar reporte HTML de pruebas unitarias
         if: always()
@@ -41,6 +47,14 @@ jobs:
           path: |
             target/site/
             target/surefire-reports/
+          if-no-files-found: warn
+
+      - name: Guardar reporte de integración
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reporte-pruebas-integracion
+          path: target/failsafe-reports/
           if-no-files-found: warn
 
       - name: Guardar reporte BDD
