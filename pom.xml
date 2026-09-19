@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>cl.figio</groupId>
-    <artifactId>pruebaUnidad2_automatizacionPruebas</artifactId>
+    <artifactId>examenFinal_automatizacionPruebas</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
