@@ -15,17 +15,31 @@ public class LoginHttpServer {
 
     public static void main(String[] args) throws IOException {
 
-        HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
+        HttpServer server = iniciarServidor(8080);
 
-        server.createContext("/login", LoginHttpServer::procesarLogin);
+        System.out.println(
+                "Servidor iniciado en http://localhost:8080/login"
+        );
+    }
+
+    public static HttpServer iniciarServidor(int puerto) throws IOException {
+
+        HttpServer server =
+                HttpServer.create(new InetSocketAddress(puerto), 0);
+
+        server.createContext(
+                "/login",
+                LoginHttpServer::procesarLogin
+        );
 
         server.setExecutor(null);
         server.start();
 
-        System.out.println("Servidor iniciado en http://localhost:8080/login");
+        return server;
     }
 
-    private static void procesarLogin(HttpExchange exchange) throws IOException {
+    private static void procesarLogin(HttpExchange exchange)
+            throws IOException {
 
         if (!"POST".equalsIgnoreCase(exchange.getRequestMethod())) {
             responder(exchange, 405, "Método no permitido");
@@ -40,12 +54,23 @@ public class LoginHttpServer {
         boolean accesoPermitido =
                 body.contains("\"usuario\":\"felipe\"")
                         && body.contains("\"contrasena\":\"1234\"")
-                        && loginService.iniciarSesion("felipe", "1234");
+                        && loginService.iniciarSesion(
+                        "felipe",
+                        "1234"
+                );
 
         if (accesoPermitido) {
-            responder(exchange, 200, "{\"resultado\":\"acceso permitido\"}");
+            responder(
+                    exchange,
+                    200,
+                    "{\"resultado\":\"acceso permitido\"}"
+            );
         } else {
-            responder(exchange, 401, "{\"resultado\":\"acceso rechazado\"}");
+            responder(
+                    exchange,
+                    401,
+                    "{\"resultado\":\"acceso rechazado\"}"
+            );
         }
     }
 
@@ -55,12 +80,19 @@ public class LoginHttpServer {
             String respuesta
     ) throws IOException {
 
-        byte[] contenido = respuesta.getBytes(StandardCharsets.UTF_8);
+        byte[] contenido =
+                respuesta.getBytes(StandardCharsets.UTF_8);
 
         exchange.getResponseHeaders()
-                .add("Content-Type", "application/json; charset=UTF-8");
+                .add(
+                        "Content-Type",
+                        "application/json; charset=UTF-8"
+                );
 
-        exchange.sendResponseHeaders(status, contenido.length);
+        exchange.sendResponseHeaders(
+                status,
+                contenido.length
+        );
 
         try (OutputStream output = exchange.getResponseBody()) {
             output.write(contenido);
