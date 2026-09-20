@@ -29,13 +29,15 @@ https://github.com/FelipeGCM/examenFinal_automatizacionPruebas
 
 Para organizar el desarrollo del examen se utilizó una estructura basada en GitFlow.
 
-Se trabajó principalmente con:
+Las ramas utilizadas fueron:
 
-- `main`: rama principal del proyecto.
-- `develop`: rama creada como punto de integración.
-- `feature/deployment-pipeline`: rama donde se realizaron los cambios asociados al despliegue, acceptance tests y rollback.
+- `main`: rama principal y estable del proyecto.
+- `develop`: rama utilizada para integrar los cambios antes de llevarlos a `main`.
+- `feature/deployment-pipeline`: rama donde se desarrollaron los cambios relacionados con pruebas de integración, despliegue, acceptance tests y rollback.
 
-Durante el desarrollo del examen los cambios se trabajaron sobre la rama `feature/deployment-pipeline`, manteniéndolos separados de `main` mientras se realizaban las pruebas y validaciones.
+El trabajo se realizó inicialmente sobre `feature/deployment-pipeline`. Una vez terminadas las validaciones, los cambios fueron integrados primero a `develop` y luego a `main`.
+
+Con esto se mantuvo separado el trabajo en desarrollo de la versión principal hasta terminar las pruebas.
 
 ---
 
@@ -334,4 +336,4 @@ Con este proyecto se logró dejar automatizado el flujo desde la validación del
 
 Las pruebas se ejecutan mediante Maven y GitHub Actions, mientras que el despliegue se realiza utilizando Docker sobre un servidor Ubuntu.
 
-Además, antes de considerar una versión como estable se ejecutan acceptance tests. Si estos fallan, el sistema vuelve automáticamente a la última versión que había sido validada correctamente.
+Antes de considerar una versión como estable se ejecutan acceptance tests. Si alguna de estas validaciones falla, el sistema vuelve automáticamente a la última versión que había sido validada correctamente.
