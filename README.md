@@ -337,3 +337,58 @@ Con este proyecto se logró dejar automatizado el flujo desde la validación del
 Las pruebas se ejecutan mediante Maven y GitHub Actions, mientras que el despliegue se realiza utilizando Docker sobre un servidor Ubuntu.
 
 Antes de considerar una versión como estable se ejecutan acceptance tests. Si alguna de estas validaciones falla, el sistema vuelve automáticamente a la última versión que había sido validada correctamente.
+
+---
+# 10. Ejecución
+
+Para ejecutar las pruebas del proyecto de forma local:
+
+```text
+mvn clean verify
+```
+
+Este comando ejecuta las pruebas unitarias, BDD y las pruebas de integración configuradas en Maven.
+
+El pipeline de integración continua se ejecuta automáticamente mediante GitHub Actions al realizar cambios sobre las ramas configuradas en el workflow.
+
+Para ejecutar el pipeline de despliegue en el ambiente de pruebas:
+
+```text
+./deploy/deploy.sh VERSION
+```
+
+Ejemplo:
+
+```text
+./deploy/deploy.sh 1.1
+```
+
+Durante este proceso se construye la nueva imagen, se despliega, se ejecutan los acceptance tests y, si alguna validación falla, se realiza el rollback hacia la última versión estable.
+
+Para ejecutar rollback manualmente:
+
+```text
+./deploy/rollback.sh
+```
+
+---
+
+# 11. Evidencias
+
+A continuación se incluyen algunas evidencias principales del funcionamiento del proyecto.
+
+## Pipeline de integración continua
+
+![Pipeline de integración continua](docs/evidencias/Pipeline.png)
+
+## Despliegue exitoso
+
+![Despliegue exitoso](docs/evidencias/Despliegue.png)
+
+## Rollback automático
+
+![Rollback automático](docs/evidencias/Rollback.png)
+
+Las capturas de ejecución y el paso a paso completo del desarrollo se incluyen además en el informe adjunto a la entrega realizada a través del portal.
+
+---
